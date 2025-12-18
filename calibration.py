@@ -1,6 +1,7 @@
 from ctu_crs import CRS97
 import kinematics as k
 import numpy as np
+import cv2
 
 
 class Homography:
@@ -37,7 +38,43 @@ class Homography:
                     else:
                         print(f"No IK solutions found for target offset ({x}, {y}, {0.05})!")
                         continue
+    
+    def calculate_homography(self):
+ 
+        images = np.asarray(self.images)
+        assert images.shape[0] == len(self.position) #ensure we have the same amount of images and positions
 
+        circle_centers = []
+        for img in images:
+            bw = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            bw = cv2.GaussianBlur(bw, (5, 5), 0)
+            circles = cv2.HoughCircles(bw, cv2.HOUGH_GRADIENT, dp=1.2, minDist=50, param1=50, param2=70, minRadius=5, maxRadius=150)
+            if circles is not None:
+                circles = np.uint16(np.around(circles))
+                print(f"Detected {circles.shape[1]} circles")
+                print(f"Circle parameters: {circles[0][0]}")
+                center = (circles[0][0][0], circles[0][0][1])  # x, y coordinates of the circle center
+                circle_centers.append(center)  # Take the first detected circle
+
+
+        print(f"Total detected circles: {len(circle_centers)}")
+        assert len(circle_centers) == len(self.position), "Number of detected circles does not match number of hoop positions"  
+
+        defined_centers = []
+        for pos in self.position:
+            defined_centers.append(pos[:2])  # Take only x and y coordinates
+        
+
+        print (f"Defined centers: {defined_centers}")
+        print (f"Detected centers: {circle_centers}")
+
+        # todo HW03: Find homography using cv2.findHomography. Use the hoop positions and circle centers.
+
+        homography_matrix, _ = cv2.findHomography(np.array(circle_centers), np.array(defined_centers), cv2.RANSAC, 5.0)
+
+        self.H = homography_matrix
+        print(f"Calculated Homography Matrix:\n{self.H}")
+        np.save('homography_matrix.npy', self.H)
 
 
 if __name__ == "__main__":
