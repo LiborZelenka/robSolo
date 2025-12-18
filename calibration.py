@@ -41,7 +41,7 @@ class Homography:
                         continue
         
         # Create directory to save images if it doesn't exist
-        save_dir = 'homographyImages'
+        save_dir = os.path.join(os.path.dirname(__file__), 'homographyImages')
         os.makedirs(save_dir, exist_ok=True)
 
         # Save captured images to the directory
