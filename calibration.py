@@ -40,3 +40,6 @@ class Homography:
 
 
 
+if __name__ == "__main__":
+    homography = Homography()
+    homography.capture_calibration_images()
