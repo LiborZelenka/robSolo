@@ -6,12 +6,13 @@ import os
 
 
 class Homography:
-    def __init__(self, robot):
+    def __init__(self):
         self.H = []
         self.position = []
         self.images = []
-        self.robot = robot
+        self.robot = CRS97()
         self.robot.soft_home()
+        self.robot.initialize()
 
 
     def capture_calibration_images(self):
