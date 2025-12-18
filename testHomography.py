@@ -6,10 +6,10 @@ import os
 # --- 1. SETUP YOUR HOMOGRAPHY ---
 # Replace this with your actual calibrated 3x3 Homography matrix
 
-if os.path.exists('./homography_matrix.txt'):
-    H = np.loadtxt('./homography_matrix.txt')
+if os.path.exists('./homography_matrix.npy'):
+    H = np.load('./homography_matrix.npy')
 else:
-    raise FileNotFoundError("Homography matrix file 'homography_matrix.txt' not found.")
+    raise FileNotFoundError("Homography matrix file 'homography_matrix.npy' not found.")
 
 def pixel_to_world(u, v, h_matrix):
     """
