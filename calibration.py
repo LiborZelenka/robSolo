@@ -2,17 +2,16 @@ from ctu_crs import CRS97
 import kinematics as k
 import numpy as np
 
-
-robot = CRS97()
-robot.initialize()
-
-q0 = robot.q_home
-
 homography = []
 images = []
 positions = []
 
 def capture_calibration_images():
+    robot = CRS97()
+    robot.initialize()
+    q0 = robot.q_home
+    robot.soft_home()
+
     for x in np.arange(0.35, 0.55, 0.05):
         for y in np.arange(-0.20, 0.20, 0.05):
                 current_pose = k.fk(robot.get_q(), robot)
