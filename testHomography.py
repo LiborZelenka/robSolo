@@ -31,7 +31,7 @@ def pixel_to_world(u, v, h_matrix):
 
 def main():
     # --- 2. CONFIGURATION ---
-    target_pixel = (320, 240)  # The camera pixel (u, v) you want to reach
+    target_pixel = (1920/2, 1200/2)
     safe_z_height = 0.2        # Safe height in meters (world Z) to move to
     
     # --- 3. CALCULATE TARGET X, Y ---
@@ -48,6 +48,8 @@ def main():
 
     # Create target pose based on current rotation (keep tool orientation same)
     target_pose = current_pose.copy()
+
+    target_pose[:3, :3] = k.get_rotation_from_z(np.array([0, 0, -1]))
     
     # Update position (X, Y from camera, Z from safety setting)
     target_pose[0, 3] = target_x
