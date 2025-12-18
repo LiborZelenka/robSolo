@@ -32,7 +32,7 @@ def pixel_to_world(u, v, h_matrix):
 def main():
     # --- 2. CONFIGURATION ---
     target_pixel = (1920/2, 1200/2)
-    safe_z_height = 0.2        # Safe height in meters (world Z) to move to
+    safe_z_height = 0.05        # Safe height in meters (world Z) to move to
     
     # --- 3. CALCULATE TARGET X, Y ---
     target_x, target_y = pixel_to_world(target_pixel[0], target_pixel[1], H)
@@ -40,7 +40,8 @@ def main():
 
     # --- 4. ROBOT CONTROL ---
     robot = CRS97()
-    robot.initialize()
+    robot.initialize(False)
+    robot.soft_home()
     
     # Get current configuration to find the closest solution later
     q0 = robot.get_q()

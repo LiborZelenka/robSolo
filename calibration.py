@@ -11,8 +11,8 @@ class Homography:
         self.position = []
         self.images = []
         self.robot = CRS97()
+        self.robot.initialize(False)
         self.robot.soft_home()
-        self.robot.initialize()
 
 
     def capture_calibration_images(self):
