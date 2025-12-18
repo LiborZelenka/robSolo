@@ -4,7 +4,7 @@ import numpy as np
 # T_es: Transformation from End-effector to Sensor/Tool
 T_es = np.eye(4)
 T_es[:3, 3] = [-0.135, 0.0, 0.0]  # Example: 10 cm offset along Z-axis
-T_es[:3, :3] = np.diag([-1, 1, -1])  # Example rotation adjustment
+T_es[:3, :3] = np.diag([1, 1, 1])  # Example rotation adjustment
 
 # T_se: Inverse (Sensor to End-effector)
 T_se = np.linalg.inv(T_es)
