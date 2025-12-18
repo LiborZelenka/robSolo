@@ -16,7 +16,7 @@ class ArucoSearch:
         corners, ids, rejected = detector.detectMarkers(gray)
         return corners, ids, rejected
 
-    def Get_center(self, img, debug=False):
+    def get_center(self, img, debug=False):
         corners, ids, rejected = self.search(img)
         if debug:
             print("Nalezené ID:", ids)
@@ -41,11 +41,26 @@ class ArucoSearch:
         v = p2 - p1
         angle_rad = np.arctan2(v[1], v[0])
 
+        top_left_1 = corners[i1][0][0]
+        top_right_1 = corners[i1][0][1]
+        bottom_left_1 = corners[i1][0][3]
+
+        x = top_right_1 - top_left_1
+        y = bottom_left_1 - top_left_1
+
+        x_vec = (x) / np.linalg.norm(x)
+        y_vec = (y) / np.linalg.norm(y)
+
+
+
         if debug:
             print("Středy markerů:", centers)
             print("Střed mezi nimi:", midpoint)
             print("Úhel mezi markery:", angle_rad)
+
             for center in centers:
+                cv2.line(img, (int(top_left_1[0]), int(top_left_1[1])), (int(top_right_1[0]), int(top_right_1[1])), (255, 0, 0), 2)
+                cv2.line(img, (int(top_left_1[0]), int(top_left_1[1])), (int(bottom_left_1[0]), int(bottom_left_1[1])), (255, 0, 0), 2)
                 cv2.circle(img, (int(center[0]), int(center[1])), 5, (0, 0, 255), -1)
             cv2.circle(img, (int(midpoint[0]), int(midpoint[1])), 7, (0, 255, 0), -1)
             cv2.line(img, (int(p1[0]), int(p1[1])), (int(p2[0]), int(p2[1])), (255, 0, 0), 2)
@@ -54,7 +69,7 @@ class ArucoSearch:
             cv2.imshow("result", img)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
-        return midpoint, angle_rad
+        return midpoint, x_vec, y_vec
 
 
 folder = "./ARUCO"
@@ -64,4 +79,4 @@ for path in glob.glob(os.path.join(folder, "*.png")) + glob.glob(os.path.join(fo
         continue
     print(path)
     aruco = ArucoSearch()
-    aruco.Get_center(img, debug=True)
+    aruco.get_center(img, debug=True)
