@@ -66,3 +66,39 @@ def ik(target_pose: np.ndarray, robot):
 
     # Return unique solutions sorted by distance to a reference (optional)
     return np.unique(np.array(ik_solutions), axis=0)
+
+import numpy as np
+
+def get_rotation_from_z(z_vector):
+    """
+    Creates a 3x3 rotation matrix where the Z-axis points in the
+    direction of 'z_vector'. X and Y are generated automatically.
+    """
+    # 1. Normalize the input Z vector
+    z = np.array(z_vector, dtype=float)
+    norm = np.linalg.norm(z)
+    if norm < 1e-6:
+        raise ValueError("Z vector cannot be zero.")
+    z /= norm
+
+    # 2. Pick a temporary "helper" vector (aux)
+    # We use global Y [0, 1, 0] usually. 
+    # If Z is too close to Y, we use X [1, 0, 0] to avoid parallel issues.
+    aux = np.array([0, 1, 0], dtype=float)
+    if np.abs(np.dot(aux, z)) > 0.99:
+        aux = np.array([1, 0, 0], dtype=float)
+
+    # 3. Generate X axis (perpendicular to Z and aux)
+    x = np.cross(aux, z)
+    x /= np.linalg.norm(x)
+
+    # 4. Generate Y axis (perpendicular to Z and X)
+    y = np.cross(z, x)
+
+    # 5. Stack them into a rotation matrix columns [x, y, z]
+    R = np.eye(3)
+    R[:, 0] = x
+    R[:, 1] = y
+    R[:, 2] = z
+    
+    return R
