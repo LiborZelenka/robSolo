@@ -31,11 +31,11 @@ class Homography:
                         self.robot.move_to_q(closest_solution)
                         self.robot.wait_for_motion_stop()
 
-                        self.images.append(self.robot.grab_image("calib_img_x{:.2f}_y{:.2f}.png".format(x, y)))
+                        self.images.append(self.robot.grab_image())
                         self.position.append([x, y, 0.05])
 
                     else:
-                        print(f"No IK solutions found for target offset ({x}, {y}, {z})!")
+                        print(f"No IK solutions found for target offset ({x}, {y}, {0.05})!")
                         continue
 
 
