@@ -2,6 +2,7 @@ from ctu_crs import CRS97
 import kinematics as k
 import numpy as np
 import cv2
+import os
 
 
 class Homography:
@@ -38,6 +39,14 @@ class Homography:
                     else:
                         print(f"No IK solutions found for target offset ({x}, {y}, {0.05})!")
                         continue
+        
+        # Create directory to save images if it doesn't exist
+        save_dir = 'homographyImages'
+        os.makedirs(save_dir, exist_ok=True)
+
+        # Save captured images to the directory
+        for idx, img in enumerate(self.images):
+            cv2.imwrite(os.path.join(save_dir, f'image_{idx}.png'), img)
     
     def calculate_homography(self):
  
