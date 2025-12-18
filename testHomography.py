@@ -6,8 +6,8 @@ import os
 # --- 1. SETUP YOUR HOMOGRAPHY ---
 # Replace this with your actual calibrated 3x3 Homography matrix
 
-if os.path.exists('homography_matrix.txt'):
-    H = np.loadtxt('homography_matrix.txt')
+if os.path.exists('./homography_matrix.txt'):
+    H = np.loadtxt('./homography_matrix.txt')
 else:
     raise FileNotFoundError("Homography matrix file 'homography_matrix.txt' not found.")
 
