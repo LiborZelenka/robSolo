@@ -6,12 +6,11 @@ import os
 
 
 class Homography:
-    def __init__(self):
+    def __init__(self, robot):
         self.H = []
         self.position = []
         self.images = []
-        self.robot = CRS97()
-        self.robot.initialize()
+        self.robot = robot
         self.robot.soft_home()
 
 
