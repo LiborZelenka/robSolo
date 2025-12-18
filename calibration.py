@@ -4,7 +4,7 @@ import numpy as np
 
 
 robot = CRS97()
-robot.initialize(tty_dev=None)
+robot.initialize()
 
 q0 = robot.q_home
 
