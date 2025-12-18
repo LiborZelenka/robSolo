@@ -17,8 +17,8 @@ class Homography:
 
     def capture_calibration_images(self):
 
-        for x in np.arange(0.35, 0.55, 0.05):
-            for y in np.arange(-0.20, 0.20, 0.05):
+        for x in np.arange(0.35, 0.55, 0.1):
+            for y in np.arange(-0.20, 0.20, 0.1):
                     current_pose = k.fk(self.robot.get_q(), self.robot)
                     target_pose = current_pose.copy()
                     target_pose[0, 3] = x 
